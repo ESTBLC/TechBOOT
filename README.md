@@ -1,2 +1,0 @@
-# TechOS
-Assembly OS

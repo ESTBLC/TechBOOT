@@ -1,28 +1,34 @@
 ORG 0x7C00                      ;Adresse de début du bootlader (inchangeable)
 
-mov al, 03h
-call vidmod
-mov al, 0
-call changepage
+mov ax, stack_top
+mov ss, ax
+mov ax, stack_bot
+mov sp, ax 
 
-xor bx, 0
-mov si, OSNAME
+;push 03h
+;call vidmod
+
+push OSNAME
 call printstr
-mov si, OSVER
-call printstr
 
-call scan
+;push string
+;call scan
+;push string 
+;call printstr
 
-call REBOOT
-	
-
-;Variables
-OSNAME: db "Techos ",0
-OSVER:  db "V0.0.1",10,13,10,13,0
-NEXTMEMBLOCK: db 7E00
+STOP_OS:
+ret
 
 ;Inclusions
 %include "FUNC-IO.asm"
+
+;Variables
+OSNAME: db "Techos V0.1",13,10,0
+string: db 0,0,0,0,0,0,0,0,0,0,0
+
+stack_bot:
+ times 10 dw 0
+stack_top:
 
 ;End of bootloader
 times 510 - ($ - $$) db 0       ;Rempli de 0 le reste du secteur
